@@ -2,11 +2,15 @@ import {
   Column,
   DeleteDateColumn,
   Entity,
+  ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Roles } from './role-type.eum';
+import { Recipe } from '../recipes/recipe.entity';
+import { Review } from '../review/review.entity';
 
 @Entity()
 export class User {
@@ -34,6 +38,12 @@ export class User {
   @DeleteDateColumn()
   deleatedAt: Date;
 
+  @OneToMany(() => Recipe, (recipe) => recipe.id)
+  recipes: Recipe[];
+
+  @OneToMany(() => Review, (review) => review.id)
+  reviews: Review[];
+  
   async validatePassword(
     password: string,
     hashedPassword: string,
